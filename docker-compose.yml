@@ -1,17 +1,7 @@
 version: "3.8"
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - .:/var/www/html
-    networks:
-      - job_queue_network
-    ports:
-      - "127.0.0.1:9000:9000"
-  
+
   mysql:
     image: mysql:8.0
     environment:
@@ -23,8 +13,7 @@ services:
       - job_queue_network
     volumes:
       - mysql_data:/var/lib/mysql
-    
-  
+
   redis:
     image: redis:alpine
     networks:
@@ -32,6 +21,28 @@ services:
     ports:
       - "127.0.0.1:6379:6379"
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/html
+    networks:
+      - job_queue_network
+    ports:
+      - "127.0.0.1:9000:9000"
+    
+  horizon:
+    build: .
+    command: php artisan horizon
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - redis
+      - mysql
+      - app
+    networks:
+      - job_queue_network
 
 networks:
   job_queue_network:

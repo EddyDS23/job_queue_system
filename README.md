@@ -45,18 +45,9 @@ vim .env
 3. Levantar el contenedor docker y generar clave
 ```bash
 sudo docker compose up -d --build
-sudo docker compose exec app php artisan key:generate
 ```
 
-4. Correr Migraciones
-```bash
-sudo docker compose exec app php artisan migrate
-```
 
-5. Levantar Horizon
-```bash
-sudo docker compose exec app php artisan horizon
-```
 
 >El dashboard estara disponible en http://localhost/horizon
 
