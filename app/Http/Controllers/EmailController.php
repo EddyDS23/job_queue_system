@@ -52,13 +52,13 @@ class EmailController extends Controller
         }
 
         if($job->status == 'cancelled'){
-            return response()->json(['message'=>'Job was cancelled already'],200);
+            return response()->json(['message'=>'Job has already been canceled'],200);
         }
 
         $job->status = 'cancelled';
         $job->save();
 
-        return response()->json(['message'=>'Job is deleted'],200);
+        return response()->json(['message'=>'Job has been canceled'],200);
 
     }
 }   
