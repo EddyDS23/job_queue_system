@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/html
+    networks:
+      - job_queue_network
+    ports:
+      - "127.0.0.1:9000:9000"
+  
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345678
+      - MYSQL_DATABASE=job_queue_system
+      - MYSQL_USER=job_user
+      - MYSQL_PASSWORD=12345678
+    networks:
+      - job_queue_network
+    volumes:
+      - mysql_data:/var/lib/mysql
+    
+  
+  redis:
+    image: redis:alpine
+    networks:
+      - job_queue_network
+    ports:
+      - "127.0.0.1:6379:6379"
+
+
+networks:
+  job_queue_network:
+  
+
+volumes:
+  mysql_data:
+
+
